@@ -196,7 +196,7 @@ void mouseReleased() {
     }
   }
 
-  if (!sSelected && sSpaces[x + y * 8] != 0)
+  if (!sSelected && sameTeam(int(sTurn) + 1, selPiece) && sSpaces[x + y * 8] != 0)
     sSelected = true;
   else if (sSelected)
     sSelected = false;
