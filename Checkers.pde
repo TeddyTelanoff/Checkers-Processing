@@ -14,6 +14,7 @@ void setup() {
   SPACE_HEIGHT = height / 8;
 
   sSpaces = new int[8 * 8];
+  sTurn = true;
 
   setupBoard();
 }
