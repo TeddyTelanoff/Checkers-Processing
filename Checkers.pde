@@ -159,7 +159,7 @@ void mouseReleased() {
     sMoved = false;
     sIsJump = false;
 
-    if (sIsJump)
+    if (!sIsJump)
       if (x == sSelectedSpaceX - 1 || x == sSelectedSpaceX + 1)
         if ((y == sSelectedSpaceY - 1 && (selPiece != 1)) || (y == sSelectedSpaceY + 1 && selPiece != 2))
 
