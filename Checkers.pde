@@ -165,16 +165,18 @@ void mouseReleased() {
             movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
 
     // Eating
-    if (x == sSelectedSpaceX - 2 && y == sSelectedSpaceY - 2 && selPiece != 1 && sSpaces[x + 1 + y * 8 + 8] != 0 && canEat(selPiece, sSpaces[x + 1 + y * 8 + 8])) {
+    boolean[] movableSpaces = getMovableSpaces(sSelectedSpaceX, sSelectedSpaceY);
+    
+    if (movableSpaces[4] && canEat(selPiece, sSpaces[x + 1 + y * 8 + 8])) {
       movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
       sSpaces[x + 1 + y * 8 + 8] = 0;
-    } else if (x == sSelectedSpaceX + 2 && y == sSelectedSpaceY - 2 && selPiece != 1 && sSpaces[x - 1 + y * 8 + 8] != 0 && canEat(selPiece, sSpaces[x - 1 + y * 8 + 8])) {
+    } else if (movableSpaces[5] && canEat(selPiece, sSpaces[x - 1 + y * 8 + 8])) {
       movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
       sSpaces[x - 1 + y * 8 + 8] = 0;
-    } else if (x == sSelectedSpaceX - 2 && y == sSelectedSpaceY + 2 && selPiece != 2 && sSpaces[x + 1 + y * 8 - 8] != 0 && canEat(selPiece, sSpaces[x + 1 + y * 8 - 8])) {
+    } else if (movableSpaces[6] && canEat(selPiece, sSpaces[x + 1 + y * 8 - 8])) {
       movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
       sSpaces[x + 1 + y * 8 - 8] = 0;
-    } else if (x == sSelectedSpaceX + 2 && y == sSelectedSpaceY + 2 && selPiece != 2 && sSpaces[x - 1 + y * 8 - 8] != 0 && canEat(selPiece, sSpaces[x - 1 + y * 8 - 8])) {
+    } else if (movableSpaces[7] && canEat(selPiece, sSpaces[x - 1 + y * 8 - 8])) {
       movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
       sSpaces[x - 1 + y * 8 - 8] = 0;
     }
