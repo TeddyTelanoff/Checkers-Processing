@@ -1,7 +1,7 @@
 int SPACE_WIDTH, SPACE_HEIGHT;
 
 int[] sSpaces;
-boolean sSelected, sTurn, sMoved, sGameOver, sIsJump;
+boolean sSelected, sTurn, sMoved, sGameOver;
 int sSelectedSpaceX, sSelectedSpaceY;
 
 boolean mouseInBounds() {
@@ -102,12 +102,12 @@ void drawBoard() {
         break;
       case 2:
         stroke(100);
-        fill(46);
+        fill(100, 55, 55);
         ellipse(x * SPACE_WIDTH + SPACE_WIDTH / 2, y * SPACE_HEIGHT + SPACE_HEIGHT / 2, SPACE_WIDTH * .75, SPACE_HEIGHT * .75);
         break;
       case 4:
         stroke(100);
-        fill(46);
+        fill(75, 55, 55);
         ellipse(x * SPACE_WIDTH + SPACE_WIDTH / 2, y * SPACE_HEIGHT + SPACE_HEIGHT / 2, SPACE_WIDTH * .75, SPACE_HEIGHT * .75);
 
         fill(#FFE51F);
@@ -127,16 +127,14 @@ void drawMovableSpaces() {
   else
     fill(0x550087D8);
 
-  if (!sIsJump) {
-    if (movableSpaces[0]) // Top Left [0]
-      rect((sSelectedSpaceX - 1) * SPACE_WIDTH, (sSelectedSpaceY - 1) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
-    if (movableSpaces[1]) // Top Right [1]
-      rect((sSelectedSpaceX + 1) * SPACE_WIDTH, (sSelectedSpaceY - 1) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
-    if (movableSpaces[2]) // Bottom Left [2]
-      rect((sSelectedSpaceX - 1) * SPACE_WIDTH, (sSelectedSpaceY + 1) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
-    if (movableSpaces[3]) // Bottom Right [3]
-      rect((sSelectedSpaceX + 1) * SPACE_WIDTH, (sSelectedSpaceY + 1) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
-  }
+  if (movableSpaces[0]) // Top Left [0]
+    rect((sSelectedSpaceX - 1) * SPACE_WIDTH, (sSelectedSpaceY - 1) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
+  if (movableSpaces[1]) // Top Right [1]
+    rect((sSelectedSpaceX + 1) * SPACE_WIDTH, (sSelectedSpaceY - 1) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
+  if (movableSpaces[2]) // Bottom Left [2]
+    rect((sSelectedSpaceX - 1) * SPACE_WIDTH, (sSelectedSpaceY + 1) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
+  if (movableSpaces[3]) // Bottom Right [3]
+    rect((sSelectedSpaceX + 1) * SPACE_WIDTH, (sSelectedSpaceY + 1) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
 
   if (movableSpaces[4]) // Top Left Eat [4]
     rect((sSelectedSpaceX - 2) * SPACE_WIDTH, (sSelectedSpaceY - 2) * SPACE_HEIGHT, SPACE_WIDTH, SPACE_HEIGHT);
@@ -157,40 +155,33 @@ void mouseReleased() {
 
   if (sSelected && sameTeam(int(sTurn) + 1, selPiece) && sSpaces[x + y * 8] == 0) {
     sMoved = false;
-    sIsJump = false;
 
-    if (!sIsJump)
-      if (x == sSelectedSpaceX - 1 || x == sSelectedSpaceX + 1)
-        if ((y == sSelectedSpaceY - 1 && (selPiece != 1)) || (y == sSelectedSpaceY + 1 && selPiece != 2))
+    if (x == sSelectedSpaceX - 1 || x == sSelectedSpaceX + 1)
+      if ((y == sSelectedSpaceY - 1 && (selPiece != 1)) || (y == sSelectedSpaceY + 1 && selPiece != 2))
 
-          if (abs(sSelectedSpaceX - x) == abs(sSelectedSpaceY - y))
+        if (abs(sSelectedSpaceX - x) == abs(sSelectedSpaceY - y))
 
-            if (sSpaces[x + y * 8] == 0)
-              movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
+          if (sSpaces[x + y * 8] == 0)
+            movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
 
     // Eating
     if (x == sSelectedSpaceX - 2 && y == sSelectedSpaceY - 2 && selPiece != 1 && sSpaces[x + 1 + y * 8 + 8] != 0 && canEat(selPiece, sSpaces[x + 1 + y * 8 + 8])) {
       movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
       sSpaces[x + 1 + y * 8 + 8] = 0;
-      sIsJump = true;
     } else if (x == sSelectedSpaceX + 2 && y == sSelectedSpaceY - 2 && selPiece != 1 && sSpaces[x - 1 + y * 8 + 8] != 0 && canEat(selPiece, sSpaces[x - 1 + y * 8 + 8])) {
       movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
       sSpaces[x - 1 + y * 8 + 8] = 0;
-      sIsJump = true;
     } else if (x == sSelectedSpaceX - 2 && y == sSelectedSpaceY + 2 && selPiece != 2 && sSpaces[x + 1 + y * 8 - 8] != 0 && canEat(selPiece, sSpaces[x + 1 + y * 8 - 8])) {
       movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
       sSpaces[x + 1 + y * 8 - 8] = 0;
-      sIsJump = true;
     } else if (x == sSelectedSpaceX + 2 && y == sSelectedSpaceY + 2 && selPiece != 2 && sSpaces[x - 1 + y * 8 - 8] != 0 && canEat(selPiece, sSpaces[x - 1 + y * 8 - 8])) {
       movePiece(sSelectedSpaceX, sSelectedSpaceY, x, y);
       sSpaces[x - 1 + y * 8 - 8] = 0;
-      sIsJump = true;
     }
 
     if (sMoved) {
       checkIfKings();
-      if (!sIsJump)
-        sTurn = !sTurn;
+      sTurn = !sTurn;
 
       checkWin();
     }
